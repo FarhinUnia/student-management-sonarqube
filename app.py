@@ -1,7 +1,12 @@
-
+import os
+import secrets
 from flask import Flask, request, jsonify
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
+
+csrf = CSRFProtect(app)
 
 students = [
     {"id": 1, "name": "John Smith", "email": "john@gmail.com", "course": "Computer Programming"},
