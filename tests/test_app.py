@@ -49,3 +49,26 @@ def test_add_student(client):
 def test_delete_missing_student(client):
     response = client.delete("/students/999")
     assert response.status_code == 404
+
+def test_add_student_with_empty_name(client):
+    response = client.post("/students", json={
+        "name": "",
+        "email": "test@gmail.com",
+        "course": "Computer Science"
+    })
+
+    assert response.status_code == 400
+
+
+def test_update_student_with_empty_name(client):
+    response = client.put("/students/1", json={
+        "name": ""
+    })
+
+    assert response.status_code == 400
+
+
+def test_update_student_with_invalid_json(client):
+    response = client.put("/students/1", data="invalid", content_type="text/plain")
+
+    assert response.status_code == 400
